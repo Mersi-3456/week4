@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     stages {
-        
-                
 
         stage('Compile') {
             steps {
@@ -14,30 +12,33 @@ pipeline {
         stage('Test') {
             steps {
                 bat 'java TestFactorial'
-            } 
-        }
-        stage('Run') {
-            steps {
-                bat 'java Factorial'
             }
         }
+
+        stage('Run') {
+            steps {
+                bat 'java TestFactorial'
+            }
+        }
+
         stage('Package JAR') {
             steps {
                 bat 'jar cfm factorial.jar manifest.txt Factorial.class'
             }
         }
+
         stage('Archive JAR') {
             steps {
                 archiveArtifacts artifacts: 'factorial.jar'
             }
         }
-        
     }
 
     post {
         success {
-            echo 'Build, test, run and JAR cretaion successful and artifact is ready!'
+            echo 'Build, test, run and JAR creation successful and artifact is ready!'
         }
+
         failure {
             echo 'Build or test failed!'
         }
